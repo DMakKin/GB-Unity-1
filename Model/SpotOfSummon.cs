@@ -20,7 +20,6 @@ namespace DM
 
         public void EnableEffect()
         {
-            //Debug.Log(IsActive);
             if (IsActive)
             {
                 _spotOfSummon.gameObject.SetActive(false);
