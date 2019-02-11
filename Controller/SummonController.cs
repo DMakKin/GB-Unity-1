@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace DM
 {
@@ -8,8 +9,8 @@ namespace DM
         private Camera _mainCamera;
         private Ray ray;
         private RaycastHit hit;
-        private CreatureMotor _creature;
-        private int dt = 2;
+
+        private List<Creature> Creatures = new List<Creature>();
 
         private int _rightButton = (int)Mouse.RightButton;
         private KeyCode _summon = KeyCode.R;
@@ -22,15 +23,14 @@ namespace DM
             _spotOfSummon = Object.FindObjectOfType<SpotOfSummon>();
             _spotOfSummon._spotOfSummon.gameObject.SetActive(false);
             _mainCamera = Camera.main;
-            _creature = Object.FindObjectOfType<CreatureMotor>();
         }
 
         public override void OnUpdate()
         {
             if (!IsActive) return;
-            
+
             ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100, _spotOfSummon._maskForSummon)) 
+            if (Physics.Raycast(ray, out hit, 100, _spotOfSummon._maskForSummon))
             {
                 if (_spotOfSummon.IsActive)
                 {
@@ -38,26 +38,51 @@ namespace DM
                     if (Input.GetKeyDown(_summon))
                     {
                         _spotOfSummon.SummonCreature();
+                        Creatures.Add(_spotOfSummon._chosenCreature);
                     }
                 }
+
                 if (Input.GetMouseButtonDown(_rightButton))
                 {
-                    Debug.Log(hit.point);                                       
-                    _creature.readyToGoBack = false;
-                    _creature.CreatureAgent.SetDestination(hit.point);
+                    Debug.Log(Creatures.Count);
+                    if (Creatures.Count > 0)
+                    {
+                        for (int i = 0; i < Creatures.Count; i++)
+                        {
+                            Creatures[i]._goToPlayer = false;
+                            Creatures[i]._creatureAgent.SetDestination(hit.point);
+                            Creatures[i]._creatureAgent.stoppingDistance = 0;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < Creatures.Count; i++)
+                {
+                    if (Creatures[i]._goToPlayer)
+                    {
+                        Creatures[i]._creatureAgent.SetDestination(Creatures[i]._player.transform.position);
+                        Creatures[i]._creatureAgent.stoppingDistance = 3;
+                        Creatures[i]._creatureAgent.avoidancePriority = i;
+                    }
+                    else
+                    {
+                        Creatures[i].CheckDestination();
+                    }
                 }
             }
-            if (_creature.CreatureAgent.transform.position.x <= hit.point.x + dt && _creature.CreatureAgent.transform.position.x >= hit.point.x - dt
-                && _creature.CreatureAgent.transform.position.y <= hit.point.y + dt && _creature.CreatureAgent.transform.position.y >= hit.point.y - dt
-                && _creature.CreatureAgent.transform.position.z <= hit.point.z + dt && _creature.CreatureAgent.transform.position.z >= hit.point.z - dt)
-            {
-                _creature.Move();
-            }
-            if (_creature.readyToGoBack)
-            {
-                _creature.CreatureAgent.SetDestination(_creature._player.transform.position);
-            }
-        } 
+        }
+
+        //private void AddCreature(Creature bot)
+        //{
+
+        //}
+
+        //private void RemoveCreature(Creature bot)
+        //{
+
+        //}
+
+        //            if (_creature.CreatureAgent.remainingDistance < _creature.CreatureAgent.stoppingDistance)
 
         public void EnableEffect()
         {

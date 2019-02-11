@@ -10,7 +10,7 @@ namespace DM
         public PlayerStaminaController PlayerStaminaController { get; private set; }
         public MagicArmController MagicArmController { get; private set; }
         public SummonController SummonController { get; private set; }
-
+                    
         private BaseController[] Controllers;
 
         public static Main Instance { get; private set; }

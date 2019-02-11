@@ -10,6 +10,7 @@ namespace DM
         [HideInInspector] public SpotOfSummon _spotOfSummon;
         public LayerMask _maskForSummon;
         [HideInInspector] public bool IsActive = false;
+        [HideInInspector] public Creature _chosenCreature;        
 
         
         protected override void Awake()
@@ -34,7 +35,7 @@ namespace DM
 
         public void SummonCreature()
         {
-            Creature _chosenCreature = Instantiate(_summonPrefab, _spot.transform.position, _spot.transform.rotation);
+            _chosenCreature = Instantiate(_summonPrefab, _spot.transform.position, _spot.transform.rotation);
         }
     }
 }
