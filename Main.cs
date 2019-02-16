@@ -10,6 +10,7 @@ namespace DM
         public PlayerStaminaController PlayerStaminaController { get; private set; }
         public MagicArmController MagicArmController { get; private set; }
         public SummonController SummonController { get; private set; }
+        public EnemyController EnemyController { get; private set; }
                     
         private BaseController[] Controllers;
 
@@ -27,6 +28,7 @@ namespace DM
             PlayerStaminaController = new PlayerStaminaController();
             MagicArmController = new MagicArmController();
             SummonController = new SummonController();
+            EnemyController = new EnemyController();
 
             PlayerController.On();
             InputController.On();
@@ -34,14 +36,16 @@ namespace DM
             PlayerStaminaController.On();
             MagicArmController.On();
             SummonController.On();
+            EnemyController.On();
 
-            Controllers = new BaseController[6];            
+            Controllers = new BaseController[7];            
             Controllers[0] = PlayerController;
             Controllers[1] = InputController;
             Controllers[2] = LightSourceController;
             Controllers[3] = PlayerStaminaController;
             Controllers[4] = MagicArmController;
-            Controllers[5] = SummonController;            
+            Controllers[5] = SummonController;
+            Controllers[6] = EnemyController;            
         }
 
         private void FixedUpdate()
