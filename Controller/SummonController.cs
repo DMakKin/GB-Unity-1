@@ -44,7 +44,7 @@ namespace DM
 
                 if (Input.GetMouseButtonDown(_rightButton))
                 {
-                    Debug.Log(Creatures.Count);
+                    //Debug.Log(Creatures.Count);
                     if (Creatures.Count > 0)
                     {
                         for (int i = 0; i < Creatures.Count; i++)
