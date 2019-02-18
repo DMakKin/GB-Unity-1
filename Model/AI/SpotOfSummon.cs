@@ -6,7 +6,7 @@ namespace DM
     {
 
         public ParticleSystem _spot;
-        public Creature _summonPrefab;
+        private Creature _summonPrefab;
         [HideInInspector] public SpotOfSummon _spotOfSummon;
         public LayerMask _maskForSummon;
         [HideInInspector] public bool IsActive = false;
@@ -17,6 +17,7 @@ namespace DM
         {
             base.Awake();
             _spotOfSummon = FindObjectOfType<SpotOfSummon>();
+            _summonPrefab = Resources.Load<Creature>(path: "Creature");
         }
 
         public void EnableEffect()
