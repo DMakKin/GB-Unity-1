@@ -7,6 +7,9 @@ namespace DM
         private PlayerStamina _playerStamina;
         private PlayerStaminaUI _playerStaminaUI;
 
+        private KeyCode _save = KeyCode.Alpha6;
+        private KeyCode _load = KeyCode.Alpha9;
+
         public static PlayerStaminaController InstancePSC { get; private set; }
 
         public PlayerStaminaController()
@@ -19,6 +22,15 @@ namespace DM
         public override void OnUpdate()
         {
             if (!IsActive || _playerStamina == null) return;
+
+            if (Input.GetKeyDown(_save))
+            {
+                _playerStamina.SavePlayer();
+            }
+            if (Input.GetKeyDown(_load))
+            {
+                _playerStamina.LoadPlayer();
+            }
 
             _playerStaminaUI.Reserve = PlayerStamina.currentStamina;
 
