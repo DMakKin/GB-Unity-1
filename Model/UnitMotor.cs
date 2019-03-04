@@ -4,7 +4,7 @@ namespace DM
 {
     public class UnitMotor : IMotor
     {
-        private Transform _instance;
+        private Transform _character;
 
         private float _speedMove = 10;
         private float _jumpPower = 10;
@@ -12,13 +12,13 @@ namespace DM
         private Vector2 _input;
         private Vector3 _moveVector;
         private CharacterController _characterController;
-        private Transform _head;
+        private Transform _camera;
 
         public float XSensitivity = 2f;
         public float YSensitivity = 2f;
         public bool ClampVerticalRotation = true;
-        public float MinimumX = -15F;
-        public float MaximumX = 15F;
+        public float MinimumX = -30F;
+        public float MaximumX = 30F;
         public bool Smooth;
         public float SmoothTime = 5f;
         private Quaternion _characterTargetRot;
@@ -26,12 +26,12 @@ namespace DM
 
         public UnitMotor(Transform instance)
         {
-            _instance = instance;
-            _characterController = _instance.GetComponent<CharacterController>();
-            _head = Camera.main.transform;
+            _character = instance; //Получаем Transform найденного объекта с CharacterController (Персонажа)
+            _characterController = _character.GetComponent<CharacterController>(); //Получаем CC персонажа
+            _camera = Camera.main.transform; //Записываем положение камеры
 
-            _characterTargetRot = _instance.localRotation;
-            _cameraTargetRot = _head.localRotation;
+            _characterTargetRot = _character.localRotation; //Записываем поворот персонажа
+            _cameraTargetRot = _camera.localRotation; //Записываесм поворот камеры
         }
 
         public void Move()
@@ -39,20 +39,20 @@ namespace DM
             CharecterMove();
             GamingGravity();
 
-            LookRotation(_instance, _head);
+            LookRotation(_character, _camera);
         }
 
         private void CharecterMove()
         {
-            if (_characterController.isGrounded)
+            if (_characterController.isGrounded) //Проверка земли под ногами
             {
-                _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-                Vector3 desiredMove = _instance.forward * _input.y + _instance.right * _input.x;
+                _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));  //Вектор направления движения
+                Vector3 desiredMove = _character.forward * _input.y + _character.right * _input.x;
                 _moveVector.x = desiredMove.x * _speedMove;
                 _moveVector.z = desiredMove.z * _speedMove;
             }
 
-            _moveVector.y = _gravityForce;
+            _moveVector.y = _gravityForce; //Движение вниз (гравиитация)
             _characterController.Move(_moveVector * Time.deltaTime);
         }
 
