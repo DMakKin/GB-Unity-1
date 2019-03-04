@@ -6,8 +6,8 @@ namespace DM
 {
     public class FieldOfView
     {
-        private float _lookDistance = 10f;
-        private float _lookAngle = 70f;               
+        //private float _lookDistance = 10f;
+        //private float _lookAngle = 70f;               
 
     }
 }
