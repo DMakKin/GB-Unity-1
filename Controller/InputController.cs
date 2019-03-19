@@ -11,11 +11,14 @@ namespace DM
         
         private int magicType = 0;
         private int magicCount = 2;
-        private  Arm _arm;
+        private Arm _arm;
+        private Player _playerStamina;
+        
 
         public InputController()
         {
-            _arm = Object.FindObjectOfType<Arm>();         
+            _arm = Object.FindObjectOfType<Arm>();
+            _playerStamina = Object.FindObjectOfType<Player>();         
         }
 
         public override void OnUpdate()
@@ -23,6 +26,7 @@ namespace DM
             if (!IsActive) return;
             if (Input.GetKeyDown(_codeLight) && !Main.Instance.LightSourceController.IsActive)
             {
+                _playerStamina._animator.SetTrigger("CastLight");
                 Main.Instance.LightSourceController.On();
             }
 

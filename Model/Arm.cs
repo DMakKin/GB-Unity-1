@@ -21,12 +21,17 @@ namespace DM
 
         public void Fire()
         {
+            Invoke("FireLaunch", 0.6f);
+        }
+
+        private void FireLaunch()
+        {
             if (_isReady)
             {
-                var currentMagic = Instantiate(_chosenPrefab, _spotOfCast.position, _spotOfCast.rotation);                                
+                var currentMagic = Instantiate(_chosenPrefab, _spotOfCast.position, _spotOfCast.rotation);
                 currentMagic.Rbd.AddForce(_spotOfCast.forward * _force);
                 _isReady = false;
-                Invoke(nameof(CastPreparing), _coolDown);                              
+                Invoke(nameof(CastPreparing), _coolDown);
             }
         }
 

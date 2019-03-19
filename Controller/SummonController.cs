@@ -6,6 +6,7 @@ namespace DM
     public class SummonController : BaseController
     {
         private SpotOfSummon _spotOfSummon;
+        private Player _playerStamina;
         private Camera _mainCamera;
         private Ray ray;
         private RaycastHit hit;
@@ -23,6 +24,7 @@ namespace DM
             _spotOfSummon = Object.FindObjectOfType<SpotOfSummon>();
             _spotOfSummon._spotOfSummon.gameObject.SetActive(false);
             _mainCamera = Camera.main;
+            _playerStamina = Object.FindObjectOfType<Player>();
         }
 
         public override void OnUpdate()
@@ -37,8 +39,9 @@ namespace DM
                     _spotOfSummon._spot.transform.position = hit.point;
                     if (Input.GetKeyDown(_summon))
                     {
+                        _playerStamina._animator.SetTrigger("Summon");
                         _spotOfSummon.SummonCreature();
-                        Creatures.Add(_spotOfSummon._chosenCreature);
+                        Creatures.Add(_spotOfSummon._chosenCreature);                        
                     }
                 }
 

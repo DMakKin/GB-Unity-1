@@ -22,7 +22,7 @@ namespace DM
             if (!_lightSource.lightOn && enoughStamina)
             {
                 _lightSource.PlayEffect();
-                PlayerStamina.currentStamina -= _lightSource.staminaNeeded;
+                Player.currentStamina -= _lightSource.staminaNeeded;
             }
             
             if (LightSource.lightEffectDuration <= 0)

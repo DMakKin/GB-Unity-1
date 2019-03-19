@@ -4,7 +4,7 @@ namespace DM
 {
     public class PlayerStaminaController : BaseController
     {
-        private PlayerStamina _playerStamina;
+        private Player _player;
         private PlayerStaminaUI _playerStaminaUI;
 
         private KeyCode _save = KeyCode.Alpha6;
@@ -15,34 +15,34 @@ namespace DM
         public PlayerStaminaController()
         {
             InstancePSC = this;
-            _playerStamina = Object.FindObjectOfType<PlayerStamina>();
+            _player = Object.FindObjectOfType<Player>();
             _playerStaminaUI = Object.FindObjectOfType<PlayerStaminaUI>();
         }
 
         public override void OnUpdate()
         {
-            if (!IsActive || _playerStamina == null) return;
+            if (!IsActive || _player == null) return;
 
             if (Input.GetKeyDown(_save))
             {
-                _playerStamina.SavePlayer();
+                _player.SavePlayer();
             }
             if (Input.GetKeyDown(_load))
             {
-                _playerStamina.LoadPlayer();
+                _player.LoadPlayer();
             }
 
-            _playerStaminaUI.Reserve = PlayerStamina.currentStamina;
+            _playerStaminaUI.Reserve = Player.currentStamina;
 
-            if (PlayerStamina.currentStamina < _playerStamina.maxStamina)
+            if (Player.currentStamina < _player.maxStamina)
             {
-                PlayerStamina.currentStamina += _playerStamina.regeneration * Time.deltaTime;                
+                Player.currentStamina += _player.regeneration * Time.deltaTime;                
             }
         }
 
         public bool CheckCurrentStamina(float price)
         {
-            if (PlayerStamina.currentStamina >= price)
+            if (Player.currentStamina >= price)
             {
                 return true;
             }

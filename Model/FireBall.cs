@@ -5,8 +5,15 @@ namespace DM
     public class FireBall : Magic
     {
         [SerializeField] protected ParticleSystem explEffect;
+        [SerializeField] private float timeToDestroy = 10f;
         private float _radius = 6;
         private float _force = 600;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            Destroy(gameObject, timeToDestroy);
+        }
 
         private void OnCollisionEnter(Collision collision)
         {

@@ -7,7 +7,7 @@ namespace DM
     {
         [HideInInspector] public NavMeshAgent _creatureAgent;
         [HideInInspector] public bool _goToPlayer = true;
-        [HideInInspector] public PlayerStamina _player;
+        [HideInInspector] public Player _player;
         private bool _alreadyChecking = false;
 
         protected override void Awake()
@@ -15,7 +15,7 @@ namespace DM
             base.Awake();
 
             _creatureAgent = GetComponent<NavMeshAgent>();
-            _player = FindObjectOfType<PlayerStamina>();
+            _player = FindObjectOfType<Player>();
         }
 
         public void CheckDestination()

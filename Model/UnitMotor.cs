@@ -7,8 +7,9 @@ namespace DM
         private Transform _character;
 
         private float _speedMove = 10;
-        private float _jumpPower = 10;
+        //private float _jumpPower = 10;
         private float _gravityForce;
+        private float _runPercent = 0f;
         private Vector2 _input;
         private Vector3 _moveVector;
         private CharacterController _characterController;
@@ -17,12 +18,13 @@ namespace DM
         public float XSensitivity = 2f;
         public float YSensitivity = 2f;
         public bool ClampVerticalRotation = true;
-        public float MinimumX = -30F;
-        public float MaximumX = 30F;
+        public float MinimumX = -45F;
+        public float MaximumX = 45F;
         public bool Smooth;
         public float SmoothTime = 5f;
         private Quaternion _characterTargetRot;
         private Quaternion _cameraTargetRot;
+        private Player _player;
 
         public UnitMotor(Transform instance)
         {
@@ -32,6 +34,7 @@ namespace DM
 
             _characterTargetRot = _character.localRotation; //Записываем поворот персонажа
             _cameraTargetRot = _camera.localRotation; //Записываесм поворот камеры
+            _player = Object.FindObjectOfType<Player>();
         }
 
         public void Move()
@@ -45,11 +48,22 @@ namespace DM
         private void CharecterMove()
         {
             if (_characterController.isGrounded) //Проверка земли под ногами
-            {
+            {                
                 _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));  //Вектор направления движения
                 Vector3 desiredMove = _character.forward * _input.y + _character.right * _input.x;
                 _moveVector.x = desiredMove.x * _speedMove;
                 _moveVector.z = desiredMove.z * _speedMove;
+
+                if (Input.GetKey(KeyCode.W) && _runPercent <= 1.0f)
+                {
+                    _runPercent += 0.05f; 
+                }
+                else if (!Input.GetKey(KeyCode.W) && _runPercent >= 0.0f)
+                {
+                    _runPercent -= 0.05f;
+                }
+
+                _player._animator.SetFloat("Run", _runPercent, 0.3f, Time.deltaTime);
             }
 
             _moveVector.y = _gravityForce; //Движение вниз (гравиитация)
@@ -60,7 +74,11 @@ namespace DM
         {
             if (!_characterController.isGrounded) _gravityForce -= 30 * Time.deltaTime;
             else _gravityForce = -1;
-            if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded) _gravityForce = _jumpPower;
+            if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)
+            {
+                //_gravityForce = _jumpPower;
+                _player._animator.SetTrigger("Jump");
+            }
         }
 
         private void LookRotation(Transform character, Transform camera)
