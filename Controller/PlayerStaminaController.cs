@@ -38,6 +38,12 @@ namespace DM
             {
                 Player.currentStamina += _player.regeneration * Time.deltaTime;                
             }
+
+            if (Player.itsContinue)
+            {
+                _player.LoadPlayer();
+                Player.itsContinue = false;
+            }
         }
 
         public bool CheckCurrentStamina(float price)

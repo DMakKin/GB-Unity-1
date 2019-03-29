@@ -9,11 +9,13 @@ namespace DM
         public static float currentStamina;
         public int regeneration = 1;
 
+        public static bool itsContinue;
+
         protected override void Awake()
         {
             base.Awake();
             currentStamina = maxStamina;
-            _animator = GetComponentInChildren<Animator>();
+            _animator = GetComponentInChildren<Animator>();           
         }
 
         public void SavePlayer()
