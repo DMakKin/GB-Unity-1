@@ -24,10 +24,10 @@ namespace DM
         public override void OnUpdate()
         {
             if (!IsActive) return;
-            if (Input.GetKeyDown(_codeLight) && !Main.Instance.LightSourceController.IsActive)
+            if (Input.GetKeyDown(_codeLight) && !GameManager.Instance.LightSourceController.IsActive)
             {
                 _playerStamina._animator.SetTrigger("CastLight");
-                Main.Instance.LightSourceController.On();
+                GameManager.Instance.LightSourceController.On();
             }
 
             if (Input.GetKeyDown(_fireBall))

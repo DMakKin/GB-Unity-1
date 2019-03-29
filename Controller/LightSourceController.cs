@@ -27,7 +27,7 @@ namespace DM
             
             if (LightSource.lightEffectDuration <= 0)
             {                
-                Main.Instance.LightSourceController.Off();
+                GameManager.Instance.LightSourceController.Off();
                 _lightSource.StopEffect();
                 LightSource.lightEffectDuration = _lightSource.time;
             }
