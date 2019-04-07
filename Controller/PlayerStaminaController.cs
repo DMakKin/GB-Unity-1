@@ -32,7 +32,10 @@ namespace DM
                 _player.LoadPlayer();
             }
 
-            _playerStaminaUI.Reserve = Player.currentStamina;
+            if (_playerStaminaUI != null)
+            {
+                _playerStaminaUI.Reserve = Player.currentStamina;
+            }
 
             if (Player.currentStamina < _player.maxStamina)
             {

@@ -12,11 +12,18 @@ namespace DM
         public SummonController SummonController { get; private set; }
         public EnemyController EnemyController { get; private set; }
         public IKControl IKControl { get; private set; }
+        public PortalController PortalController { get; private set; }
+        public TeleporterController TeleporterController { get; private set; }
                     
         private BaseController[] Controllers;
 
         public static GameManager Instance { get; private set; }
-
+        
+        public Camera _landCamera;
+        public Camera _caveCamera;
+        public Material _landCameraMaterial;
+        public Material _caveCameraMaterial;
+        
         private void Awake()
         {
             Instance = this;
@@ -31,6 +38,8 @@ namespace DM
             SummonController = new SummonController();
             EnemyController = new EnemyController();
             IKControl = new IKControl();
+            PortalController = new PortalController();
+            TeleporterController = new TeleporterController();
 
             PlayerController.On();
             InputController.On();
@@ -40,8 +49,10 @@ namespace DM
             SummonController.On();
             EnemyController.On();
             IKControl.On();
+            PortalController.On();
+            TeleporterController.On();
 
-            Controllers = new BaseController[8];            
+            Controllers = new BaseController[10];            
             Controllers[0] = PlayerController;
             Controllers[1] = InputController;
             Controllers[2] = LightSourceController;
@@ -49,7 +60,25 @@ namespace DM
             Controllers[4] = MagicArmController;
             Controllers[5] = SummonController;
             Controllers[6] = EnemyController;
-            Controllers[7] = IKControl;            
+            Controllers[7] = IKControl;
+            Controllers[8] = PortalController;
+            Controllers[9] = TeleporterController;
+
+            if (_caveCamera.targetTexture != null)
+            {
+                _caveCamera.targetTexture.Release();
+            }
+
+            _caveCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+            _caveCameraMaterial.mainTexture = _caveCamera.targetTexture;
+
+            if (_landCamera.targetTexture != null)
+            {
+                _landCamera.targetTexture.Release();
+            }
+
+            _landCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+            _landCameraMaterial.mainTexture = _landCamera.targetTexture;
         }
 
         private void FixedUpdate()
